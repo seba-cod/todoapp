@@ -46,8 +46,8 @@ export default function TaskList() {
                 <div className="column">
                     <Formik
                         initialValues={{
-                            priority: '',
-                            currentState: ''
+                            priority: ALL,
+                            currentState: ALL
                         }}
                         onSubmit={(values, actions) => {
                             console.log('estas son las values en el OnSubmit: ', values)
@@ -77,12 +77,12 @@ export default function TaskList() {
                         .filter(task => {
                             if (filterPriority !== ALL){
                                 return task.priority === filterPriority
-                            }
+                            } else { return task }
                         }) 
                         .filter(task => {
                             if (filterState !== ALL){
                             return task.currentState === filterState
-                            }
+                            } else { return task }
                         }).map((task) => {
                             return <Task key={task.id} task={task} />
                         })
