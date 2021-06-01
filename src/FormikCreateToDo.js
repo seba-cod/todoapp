@@ -36,7 +36,6 @@ export default function FormikCreateToDo(props) {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect( () => {
-      console.log('esto es task to edit: ', taskToEdit)
       setIsEditing(taskToEdit!==null)
   }, [taskToEdit] ) 
 

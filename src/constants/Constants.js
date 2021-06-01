@@ -1,4 +1,4 @@
-export const ALL = null;
+export const ALL = '';
 
 export const PRIORITY_HIGH = 'high';
 export const PRIORITY_MID = 'mid';

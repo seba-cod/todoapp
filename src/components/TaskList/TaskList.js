@@ -1,12 +1,45 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Formik } from 'formik';
 import { TaskListContext } from '../../context/TaskListContext';
 import { FilterForm } from './FilterForm';
 import Task from '../Task/Task';
+import { PRIORITIES, CURRENT_STATE, ALL } from '../../constants/Constants';
 import "bulma/css/bulma.css";
 
+
 export default function TaskList() {
-    const { taskList, filterBy, filterPriority, filterState } = useContext(TaskListContext)
+
+    const [filterPriority, setFilterPriority] = useState(ALL)
+    const [filterState, setFilterState] = useState(ALL)
+    const { taskList } = useContext(TaskListContext)
+
+    const filterBy = (values) => {
+        const { priority, currentState } = values
+        console.log('esto hay en values: ', values)
+        if (priority.length>0) {
+            PRIORITIES.map( prioritized => {
+                if (priority === prioritized){
+                    return setFilterPriority(prioritized)
+                }
+                return console.log(filterPriority)
+            })
+        }
+        if (currentState.length>0) {
+            CURRENT_STATE.map( stated => {
+                if (currentState === stated){
+                    return setFilterState(stated)
+                }
+                return console.log(filterState)
+            })
+        }
+        if (priority === '') {
+            setFilterPriority(ALL)
+        }
+        if (currentState === '') {
+            setFilterPriority(ALL)
+        }
+    }
+
     return (
         <div>
             <div className="columns">
@@ -22,7 +55,7 @@ export default function TaskList() {
                             setTimeout(() => { actions.setSubmitting(false) }, 200)
                         }}
                     >
-                        {props => < FilterForm {...props} />}
+                        {props => < FilterForm {...props} /> }
                     </Formik>
                 </div>
             </div>
@@ -42,11 +75,14 @@ export default function TaskList() {
                     taskList &&  
                         taskList
                         .filter(task => {
-                            return task.priority === filterPriority
-
+                            if (filterPriority !== ALL){
+                                return task.priority === filterPriority
+                            }
                         }) 
                         .filter(task => {
+                            if (filterState !== ALL){
                             return task.currentState === filterState
+                            }
                         }).map((task) => {
                             return <Task key={task.id} task={task} />
                         })
