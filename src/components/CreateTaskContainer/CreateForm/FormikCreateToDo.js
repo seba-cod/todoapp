@@ -1,12 +1,11 @@
 // eslint-disable
 import React, { useContext, useState, useEffect } from 'react'
 import { Formik } from 'formik';
-import { CreateForm } from './components/CreateTaskContainer/CreateForm';
-import { TaskListContext } from './context/TaskListContext'
+import { CreateForm } from '.';
+import { TaskListContext } from '../../../context/TaskListContext'
 
-{/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */ }
-{/*  -------------------------ERRORS-------------------------*/ }
-{/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */ }
+
+{/*  ------------------FORMIK ERRORS DECLARATION--------------------*/ }
 function validation(values) {
 
   let errors = {};
@@ -27,20 +26,20 @@ function validation(values) {
   return errors;
 }
 
-{/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */ }
 {/*  ---------------------FORM PROCESS-----------------------*/ }
-{/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */ }
 export default function FormikCreateToDo(props) {
 
   const { addTask, editTask, taskToEdit } = useContext(TaskListContext);
   const [isEditing, setIsEditing] = useState(false);
 
+  // Using an effect to manage label on Create/Edit button
   useEffect( () => {
       setIsEditing(taskToEdit!==null)
   }, [taskToEdit] ) 
 
   return (
     // Formik configuration
+    // If there's an item to edit, values are inherit as initial in form
     <Formik
       initialValues={{
         id:  taskToEdit ? taskToEdit.id : null,
@@ -50,7 +49,7 @@ export default function FormikCreateToDo(props) {
         currentState: taskToEdit ? taskToEdit.currentState : ''
       }}
       onSubmit={(values, actions) => {
-        // Context State Update
+        // Context State Update acording to case. ID is set on addTask at Context file, if no id found, task is new.
         if (values.id) {
           editTask(values)
           actions.resetForm();
@@ -58,7 +57,6 @@ export default function FormikCreateToDo(props) {
           addTask(values)
           actions.resetForm();
         }
-
         setTimeout(() => { actions.setSubmitting(false) }, 200)
       }}
       enableReinitialize={true}

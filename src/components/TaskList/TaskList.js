@@ -8,14 +8,27 @@ import "bulma/css/bulma.css";
 
 
 export default function TaskList() {
-
+    /* States */
     const [filterPriority, setFilterPriority] = useState(ALL)
     const [filterState, setFilterState] = useState(ALL)
     const { taskList } = useContext(TaskListContext)
 
+    /* Functionality */
     const filterBy = (values) => {
+        /* Destruct incoming values from filter form */
         const { priority, currentState } = values
-        console.log('esto hay en values: ', values)
+
+        /* Cases of filter */
+        /* If no option selected */
+        if (priority === '') {
+            setFilterPriority(ALL)
+        }
+        if (currentState === '') {
+            setFilterState(ALL)
+        }
+
+        /* Options that has been selected */
+        /* Map through an array of constants; ask if there's a match with the value selected */
         if (priority.length>0) {
             PRIORITIES.map( prioritized => {
                 if (priority === prioritized){
@@ -32,18 +45,13 @@ export default function TaskList() {
                 return console.log(filterState)
             })
         }
-        if (priority === '') {
-            setFilterPriority(ALL)
-        }
-        if (currentState === '') {
-            setFilterPriority(ALL)
-        }
     }
 
     return (
         <div>
             <div className="columns">
                 <div className="column">
+                { /* Filter FORM */ }
                     <Formik
                         initialValues={{
                             priority: ALL,
@@ -60,6 +68,7 @@ export default function TaskList() {
                 </div>
             </div>
 
+            {/* Tasks labels */}
             { 
                 taskList && taskList.length>0 &&
                     <label className="label is-large">Tareas pedientes</label>
@@ -70,6 +79,7 @@ export default function TaskList() {
                     <label className="label is-large">No hay tareas pendientes</label>
             }
 
+            {/* Tasks to show */}
             <div className="columns is-multiline">
                 {
                     taskList &&  

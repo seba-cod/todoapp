@@ -3,12 +3,9 @@ import { PRIORITY_HIGH, PRIORITY_MID, PRIORITY_LOW, STATE_NEW, STATE_INPROGRESS,
 import "bulma/css/bulma.css";
 
 export default function CreateForm({ handleChange, handleSubmit, isSubmitting, resetForm, values, errors, touched, isEditing }) {
-    
     return (
         <form onSubmit={handleSubmit}>
-{/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */}
-{/*  -------------------------FIELDS------------------------*/}
-{/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */}
+    {/*  -------------------------FIELDS------------------------*/}
             <div className="box">
             <div className="col-12 ">
     {/* Title */}
@@ -90,11 +87,7 @@ export default function CreateForm({ handleChange, handleSubmit, isSubmitting, r
                         </div>
                     </div>
                 </div>
-
-{/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */}
 {/*  -------------------------BUTTONS------------------------*/}
-{/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */}
-
     {/* ------------ SUBMIT ------------ */}
                 <div className="is-full">
                     <div className="field is-grouped is-grouped-centered">

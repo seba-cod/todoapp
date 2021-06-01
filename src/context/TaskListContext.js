@@ -1,16 +1,16 @@
 import React, { createContext, useState, useCallback } from 'react'
 import { v1 as uuid } from 'uuid'
 import "bulma/css/bulma.css";
-// import { PRIORITIES, CURRENT_STATE, ALL } from '../constants/Constants';
 
 export const TaskListContext = createContext();
 
 const TaskListContextProvider = (props) => {
+
+    /* States */
     const [taskList, setTaskList] = useState([])
     const [taskToEdit, setTaskToEdit] = useState(null)
-    // const [filterPriority, setFilterPriority] = useState(ALL)
-    // const [filterState, setFilterState] = useState(ALL)
-    
+
+    /* Functionality */
     const addTask = (values) => {
         const { title, description, currentState, priority } = values
         setTaskList([
@@ -24,7 +24,6 @@ const TaskListContextProvider = (props) => {
             }
         ])
     }
-
     const removeTask = useCallback( (id) => {
         setTaskList(taskList.filter(task => task.id !== id))
     }, [taskList] )
@@ -50,33 +49,6 @@ const TaskListContextProvider = (props) => {
         ])
         setTaskToEdit(null)
     }
-
-    // const filterBy = (values) => {
-    //     const { priority, currentState } = values
-
-    //     if (priority.length>0) {
-    //         PRIORITIES.map( prioritized => {
-    //             if (priority === prioritized){
-    //                 return setFilterPriority(prioritized)
-    //             }
-    //         })
-    //     }
-    //     if (currentState.length>0) {
-    //         CURRENT_STATE.map( stated => {
-    //             if (currentState === stated){
-    //                 return setFilterState(stated)
-    //             }
-    //         })
-    //     }
-    //     if (priority === '') {
-    //         setFilterPriority(ALL)
-    //     }
-    //     if (currentState === '') {
-    //         setFilterPriority(ALL)
-    //     }
-    // }
-
-
 
     return (
         <TaskListContext.Provider value={{ taskList, taskToEdit, addTask, removeTask, editTask, findTaskById }}>

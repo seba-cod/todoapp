@@ -2,7 +2,8 @@ import React from 'react';
 import "bulma/css/bulma.css";
 import { ALL, PRIORITY_HIGH, PRIORITY_MID, PRIORITY_LOW, STATE_NEW, STATE_INPROGRESS, STATE_FINISHED } from '../../../constants/Constants'
 
-export default function CreateForm({ handleSubmit, handleChange, isSubmitting, values }) {
+export default function FilterForm({ handleSubmit, handleChange, isSubmitting, values }) {
+    /* Form with no submit button, use of handleChange for updating Formik values and handling submit on event mouse out */
     return (
         <form onSubmit={handleSubmit}>
         <label className="label is-medium">Filtrar por:</label>

@@ -7,8 +7,7 @@ export default function Task({task}) {
 
     return (
         <div className="column is-4">
-     
-            <div className="card">
+                <div className="card">
                     <div className="card-header-icon" style={{background:"#F8F8F1"}}> 
                     <div className="has-text-info" style={{display:"flex", width:"100%",  justifyContent:"space-between", fontSize:"12px"}}>
                         <h6 style={{flexBasis:"35%"}}>🌟: {task.priority}</h6>
@@ -26,7 +25,7 @@ export default function Task({task}) {
                     </div>
                 <div style={{display:"flex", padding:"10px 0", justifyContent:'space-evenly', backgroundColor:"#F8F8F1"}} className="card-footer">
                     <button className="button is-rounded is-danger" onClick={() => removeTask(task.id)}> borrar</button>
-                    <button className="button is-rounded is-secondary" onClick={() => findTaskById(task.id)}> editar</button>
+                    <button className="button is-rounded is-primary" onClick={() => findTaskById(task.id)}> editar</button>
                 </div>
             </div>
             </div>
