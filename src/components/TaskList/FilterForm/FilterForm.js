@@ -1,7 +1,8 @@
 import React from 'react';
 import "bulma/css/bulma.css";
+import { ALL, PRIORITY_HIGH, PRIORITY_MID, PRIORITY_LOW, STATE_NEW, STATE_INPROGRESS, STATE_FINISHED } from '../../../constants/Constants'
 
-export default function CreateForm({ handleChange, handleSubmit, isSubmitting, resetForm, values, errors, touched }) {
+export default function CreateForm({ handleSubmit, handleChange, isSubmitting, values }) {
     return (
         <form onSubmit={handleSubmit}>
         <label className="label is-medium">Filtrar por:</label>
@@ -13,14 +14,15 @@ export default function CreateForm({ handleChange, handleSubmit, isSubmitting, r
                         <select
                             id="priority"
                             name="priority"
-                            onChange={handleSubmit}
+                            onChange={handleChange}
+                            onMouseOut={handleSubmit}
                             value={values.priority}
                             disabled={isSubmitting}
                         >
-                            <option value="all">Todas</option>
-                            <option value="high">Alta</option>
-                            <option value="mid">Media</option>
-                            <option value="low">Baja</option>
+                            <option value={ALL}>Todas</option>
+                            <option value={PRIORITY_HIGH}>Alta</option>
+                            <option value={PRIORITY_MID}>Media</option>
+                            <option value={PRIORITY_LOW}>Baja</option>
                         </select>
                     </div>
                 </div>
@@ -31,14 +33,15 @@ export default function CreateForm({ handleChange, handleSubmit, isSubmitting, r
                         <select
                             id="currentState"
                             name="currentState"
-                            onChange={handleSubmit}
+                            onChange={handleChange}
+                            onMouseOut={handleSubmit}
                             value={values.currentState}
                             disabled={isSubmitting}
                         >
-                            <option value="all">Todas</option>
-                            <option value="new">Nuevas</option>
-                            <option value="inProcess">En proceso</option>
-                            <option value="finished">Terminadas</option>
+                            <option value={ALL}>Todas</option>
+                            <option value={STATE_NEW}>Nuevas</option>
+                            <option value={STATE_INPROGRESS}>En proceso</option>
+                            <option value={STATE_FINISHED}>Terminadas</option>
                         </select>
                     </div>
                 </div>

@@ -1,13 +1,16 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useState, useCallback } from 'react'
 import { v1 as uuid } from 'uuid'
 import "bulma/css/bulma.css";
+import { PRIORITIES, CURRENT_STATE, ALL } from '../constants/Constants';
 
 export const TaskListContext = createContext();
 
 const TaskListContextProvider = (props) => {
     const [taskList, setTaskList] = useState([])
     const [taskToEdit, setTaskToEdit] = useState(null)
-    const [tasksUnfiltered, setTasksUnfiltered] = useState(taskList)
+    const [filterPriority, setFilterPriority] = useState(ALL)
+    const [filterState, setFilterState] = useState(ALL)
+    
     const addTask = (values) => {
         const { title, description, currentState, priority } = values
         setTaskList([
@@ -20,22 +23,20 @@ const TaskListContextProvider = (props) => {
                 id: uuid()
             }
         ])
-        setTasksUnfiltered(taskList)
     }
 
-    const removeTask = (id) => {
+    const removeTask = useCallback( (id) => {
         setTaskList(taskList.filter(task => task.id !== id))
-        setTasksUnfiltered(taskList)
-    }
+    }, [taskList] )
     
     const findTaskById = (id) => {
         const taskWanted = taskList.find(task => task.id === id)
         setTaskToEdit(taskWanted)
     }
 
-    const editTask = (values, id) => {
-        const { title, description, currentState, priority } = values
-        const newTaskList = taskList.filter(task => task.id !== taskToEdit.id)
+    const editTask = (values) => {
+        const { title, description, currentState, priority, id } = values
+        const newTaskList = taskList.filter(task => task.id !== values.id)
 
         setTaskList([
             ...newTaskList, 
@@ -47,27 +48,33 @@ const TaskListContextProvider = (props) => {
                 id
             }
         ])
-        setTasksUnfiltered(taskList)
+        setTaskToEdit(null)
     }
 
     const filterBy = (values) => {
         const { priority, currentState } = values
-        console.log(values)
-
-        if (priority === "all" || currentState === "all") {
-            setTaskList(tasksUnfiltered)
+        console.log('this are the values: ',values)
+        if (priority.length>0) {
+            console.log('this is priority: ',filterPriority)
+            PRIORITIES.map( prioritized => {
+                if (priority === prioritized){
+                    return setFilterPriority(prioritized)
+                }
+            })
         }
-        if (priority !== "all"){
-            setTaskList(tasksUnfiltered)
-            setTasksUnfiltered(taskList)
-            const prioritizedTasks = tasksUnfiltered.filter(task => task.priority !== priority)
-            setTaskList(prioritizedTasks);
+        if (currentState.length>0) {
+            console.log('this is state: ',filterState)
+            CURRENT_STATE.map( stated => {
+                if (currentState === stated){
+                    return setFilterState(stated)
+                }
+            })
         }
-        if (currentState !== "all"){
-            setTaskList(tasksUnfiltered)
-            setTasksUnfiltered(taskList)
-            const prioritizedTasks = tasksUnfiltered.filter(task => task.currentState !== currentState)
-            setTaskList(prioritizedTasks);
+        if (priority === '') {
+            setFilterPriority(ALL)
+        }
+        if (currentState === '') {
+            setFilterPriority(ALL)
         }
     }
 

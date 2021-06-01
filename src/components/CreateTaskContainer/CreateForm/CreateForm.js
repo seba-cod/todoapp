@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
-import { TaskListContext } from '../../../context/TaskListContext'
+import React from 'react';
+import { PRIORITY_HIGH, PRIORITY_MID, PRIORITY_LOW, STATE_NEW, STATE_INPROGRESS, STATE_FINISHED } from '../../../constants/Constants'
 import "bulma/css/bulma.css";
 
-export default function CreateForm({ handleChange, handleSubmit, isSubmitting, resetForm, values, errors, touched }) {
-    const { taskToEdit } = useContext(TaskListContext);
-    if (taskToEdit) { values = taskToEdit; }
+export default function CreateForm({ handleChange, handleSubmit, isSubmitting, resetForm, values, errors, touched, isEditing }) {
+    
     return (
         <form onSubmit={handleSubmit}>
 {/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */}
@@ -12,16 +11,6 @@ export default function CreateForm({ handleChange, handleSubmit, isSubmitting, r
 {/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */}
             <div className="box">
             <div className="col-12 ">
-    {/* id ref input */}
-        {taskToEdit && 
-        <input 
-        name="id"
-        type="hidden"
-        value={taskToEdit.id}
-        style={{display:'none'}}
-        />
-    }
-
     {/* Title */}
                 <div className="column is-full">
                     <div className="field">
@@ -69,9 +58,9 @@ export default function CreateForm({ handleChange, handleSubmit, isSubmitting, r
 
                                     >
                                         <option>¿Es importante?</option>
-                                        <option value="high">Muy</option>
-                                        <option value="mid">Un poco</option>
-                                        <option value="low">No tanto</option>
+                                        <option value={PRIORITY_HIGH}>Muy importante</option>
+                                        <option value={PRIORITY_MID}>Poco importante</option>
+                                        <option value={PRIORITY_LOW}>No tan importante</option>
                                     </select>
                                 </div>
                             </div>
@@ -91,10 +80,10 @@ export default function CreateForm({ handleChange, handleSubmit, isSubmitting, r
                                         value={values.currentState}
                                     >
                                         <option>¿Ya la estás por terminar?</option>
-                                        <option value="new">Es nueva</option>
-                                        <option value="inProcess">Esta en progreso</option>
-                                        <option value="finished">¡La termine!</option>
-                                    </select>
+                                        <option value={STATE_NEW}>Es nueva</option>
+                                        <option value={STATE_INPROGRESS}>Esta en proceso</option>
+                                        <option value={STATE_FINISHED}>¡La termine!</option>
+                                       </select>
                                 </div>
                             </div>
                             {touched.currentState && errors.currentState && <p className="help is-danger">{errors.currentState}</p>}
@@ -114,7 +103,7 @@ export default function CreateForm({ handleChange, handleSubmit, isSubmitting, r
                                 className="button is-rounded is-primary"
                                 disabled={isSubmitting}
                                 type="submit"
-                            > { taskToEdit ? <span>Editar tarea</span> : <span>Crear tarea</span> } 
+                            > { isEditing ? <span>Editar tarea</span> : <span>Crear tarea</span> } 
                             </button>
                         </p>
 

@@ -1,12 +1,12 @@
-import React, { useContext } from 'react'
+import React, { useContext } from 'react';
 import { Formik } from 'formik';
-import { TaskListContext } from '../../context/TaskListContext'
-import { FilterForm } from './FilterForm'
-import Task from '../Task/Task'
+import { TaskListContext } from '../../context/TaskListContext';
+import { FilterForm } from './FilterForm';
+import Task from '../Task/Task';
 import "bulma/css/bulma.css";
 
 export default function TaskList() {
-    const { taskList, filterBy } = useContext(TaskListContext)
+    const { taskList, filterBy, filterPriority, filterState } = useContext(TaskListContext)
     return (
         <div>
             <div className="columns">
@@ -17,6 +17,7 @@ export default function TaskList() {
                             currentState: ''
                         }}
                         onSubmit={(values, actions) => {
+                            console.log('estas son las values en el OnSubmit: ', values)
                             filterBy(values)
                             setTimeout(() => { actions.setSubmitting(false) }, 200)
                         }}
@@ -25,16 +26,32 @@ export default function TaskList() {
                     </Formik>
                 </div>
             </div>
-        { taskList.length>0 &&
-        <label className="label is-large">Tareas pedientes</label>
-        }
-        { taskList.length === 0 && 
-        <label className="label is-large">No hay tareas pendientes</label>
-        }
+
+            { 
+                taskList && taskList.length>0 &&
+                    <label className="label is-large">Tareas pedientes</label>
+            }
+
+            { 
+                taskList && taskList.length === 0 && 
+                    <label className="label is-large">No hay tareas pendientes</label>
+            }
+
             <div className="columns is-multiline">
-                {taskList.map((task) => {
-                    return <Task key={task.id} task={task} />
-                })}
+                {
+                    taskList &&  
+                        taskList
+                        .filter(task => {
+                            return task.priority === filterPriority
+
+                        }) 
+                        .filter(task => {
+                            return task.currentState === filterState
+                        }).map((task) => {
+                            return <Task key={task.id} task={task} />
+                        })
+                }
+
             </div>
                     
         </div>

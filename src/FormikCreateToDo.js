@@ -1,5 +1,5 @@
 // eslint-disable
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Formik } from 'formik';
 import { CreateForm } from './components/CreateTaskContainer/CreateForm';
 import { TaskListContext } from './context/TaskListContext'
@@ -32,22 +32,28 @@ function validation(values) {
 {/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */ }
 export default function FormikCreateToDo(props) {
 
-  const { addTask, editTask } = useContext(TaskListContext);
+  const { addTask, editTask, taskToEdit } = useContext(TaskListContext);
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect( () => {
+      console.log('esto es task to edit: ', taskToEdit)
+      setIsEditing(taskToEdit!==null)
+  }, [taskToEdit] ) 
 
   return (
     // Formik configuration
     <Formik
       initialValues={{
-        id: null,
-        title: '',
-        description: '',
-        priority: '',
-        currentState: ''
+        id:  taskToEdit ? taskToEdit.id : null,
+        title: taskToEdit ? taskToEdit.title : '',
+        description: taskToEdit ? taskToEdit.description : '',
+        priority: taskToEdit ? taskToEdit.priority : '',
+        currentState: taskToEdit ? taskToEdit.currentState : ''
       }}
-      onSubmit={(values, actions, id) => {
+      onSubmit={(values, actions) => {
         // Context State Update
         if (values.id) {
-          editTask(values, id)
+          editTask(values)
           actions.resetForm();
         } else if (!values.id){
           addTask(values)
@@ -56,10 +62,11 @@ export default function FormikCreateToDo(props) {
 
         setTimeout(() => { actions.setSubmitting(false) }, 200)
       }}
+      enableReinitialize={true}
       validate={validation}
     >
       {/* Render form with Formik as props */}
-      {props => < CreateForm {...props} />}
+      {props => < CreateForm {...props} isEditing={isEditing} /> }
     </Formik>
   )
 }

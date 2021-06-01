@@ -5,29 +5,6 @@ import "bulma/css/bulma.css";
 export default function Task({task}) {
     const { removeTask, findTaskById } = useContext(TaskListContext);
 
-    switch (task.priority) {
-        case 'high':
-            task.priority = "Alta"
-            break;
-        case 'mid':
-            task.priority = "Media"
-            break;
-        case 'low':
-            task.priority = "Baja"
-            break;
-    }
-    switch (task.currentState) {
-        case 'new':
-            task.currentState = 'Nueva'
-            break;
-        case 'inProcess':
-            task.currentState = 'Esta en progreso '
-            break;
-        case 'finished':
-            task.currentState = '¡La termine! '
-            break;
-    }
-
     return (
         <div className="column is-4">
      
